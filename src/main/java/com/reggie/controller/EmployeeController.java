@@ -6,6 +6,7 @@ import com.reggie.pojo.Employee;
 import com.reggie.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,8 +28,13 @@ public class EmployeeController {
     EmployeeService employeeService;
 
     @PostMapping("/login")
-    public Result<String> login(HttpServletRequest request, Employee employee) {
+    public Result<String> login(HttpServletRequest request, @RequestBody Employee employee) {
         return employeeService.login(request, employee);
+    }
+
+    @PostMapping("/logout")
+    public Result<String> logout(HttpServletRequest request) {
+        return employeeService.logout(request);
     }
 
 }

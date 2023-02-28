@@ -19,5 +19,5 @@ import javax.servlet.http.HttpServletRequest;
 public interface EmployeeService extends IService<Employee> {
 
     Result<String> login(HttpServletRequest request,Employee employee);
-
+    Result<String> logout(HttpServletRequest request);
 }
