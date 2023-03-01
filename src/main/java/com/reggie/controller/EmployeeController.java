@@ -1,16 +1,14 @@
 package com.reggie.controller;
 
 
-import com.reggie.Dto.EmployeeDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.reggie.config.Result;
 import com.reggie.pojo.Employee;
 import com.reggie.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -25,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    @Autowired
+    @Resource
     EmployeeService employeeService;
 
     @PostMapping("/login")
@@ -39,8 +37,14 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Result<String> add(HttpServletRequest request,@RequestBody Employee employee){
-        return employeeService.add(request,employee);
+    public Result<String> add(HttpServletRequest request, @RequestBody Employee employee) {
+        return employeeService.add(request, employee);
+    }
+
+    @GetMapping("/page")
+    public Result<Page<Employee>> page(int page, int pageSize, String name) {
+        return employeeService.page(page, pageSize, name);
+
     }
 
 }

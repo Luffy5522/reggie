@@ -1,11 +1,9 @@
 package com.reggie.service;
 
-import com.reggie.Dto.EmployeeDto;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.reggie.config.Result;
 import com.reggie.pojo.Employee;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,4 +23,6 @@ public interface EmployeeService extends IService<Employee> {
     Result<String> logout(HttpServletRequest request);
     // 新增员工
     Result<String> add(HttpServletRequest request,Employee employee);
+    // 页面查询
+    Result<Page<Employee>> page(int page, int pageSize, String name);
 }

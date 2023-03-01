@@ -1,20 +1,17 @@
 package com.reggie.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.reggie.Dto.EmployeeDto;
-import com.reggie.config.Result;
-import com.reggie.pojo.Employee;
-import com.reggie.mapper.EmployeeMapper;
-import com.reggie.service.EmployeeService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import freemarker.template.utility.StringUtil;
+import com.reggie.config.Result;
+import com.reggie.mapper.EmployeeMapper;
+import com.reggie.pojo.Employee;
+import com.reggie.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
@@ -30,7 +27,7 @@ import java.time.LocalDateTime;
 @Service
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements EmployeeService {
 
-    @Autowired
+    @Resource
     EmployeeMapper employeeMapper;
 
     /**
@@ -56,13 +53,13 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         }
 
         // 4、密码比对，如果不一致则返回登录失败结果
-        if (!selectOne.getPassword().equals(password)){
+        if (!selectOne.getPassword().equals(password)) {
             log.info("密码错误");
             return Result.error("密码错误");
         }
 
         //  5、查看员工状态，如果为已禁用状态，则返回员工已禁用结果
-        if (selectOne.getStatus() == 0){
+        if (selectOne.getStatus() == 0) {
             log.info("员工已被禁用");
             return Result.error("员工已被禁用");
         }
@@ -82,7 +79,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     }
 
     @Override
-    public Result<String> add(HttpServletRequest request,Employee employee) {
+    public Result<String> add(HttpServletRequest request, Employee employee) {
         // 员工的用户名是唯一的 所以需要先进行判断
         LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Employee::getUsername, employee.getUsername());
@@ -106,5 +103,30 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
         return Result.success("添加员工成功");
 
+    }
+
+    /**
+     * @param page :
+     * @param pageSize :
+     * @return Result<Page>
+     * @author Luffy5522
+     * @description 员工信息分页查询
+     * @date 2023/3/1 11:46
+     */
+    @Override
+    public Result<Page<Employee>> page(int page, int pageSize, String name) {
+        // 分页构造器
+        Page<Employee> pageInfo = new Page<>(page, pageSize);
+
+        // 条件构造器
+        LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
+
+
+        wrapper.like(name != null, Employee::getName, name);
+        wrapper.orderByDesc(Employee::getUpdateTime);
+
+        // 执行分页查询
+        employeeMapper.selectPage(pageInfo, wrapper);
+        return Result.success(pageInfo);
     }
 }
