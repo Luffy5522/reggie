@@ -1,7 +1,9 @@
 package com.reggie.service;
 
-import com.reggie.pojo.Category;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.reggie.config.Result;
+import com.reggie.pojo.Category;
 
 /**
  * <p>
@@ -12,5 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-02-28
  */
 public interface CategoryService extends IService<Category> {
-
+    Result<Page> pageInfo(int page, int pageSize);
 }
