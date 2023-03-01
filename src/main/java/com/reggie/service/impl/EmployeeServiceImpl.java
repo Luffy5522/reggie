@@ -79,7 +79,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     }
 
     @Override
-    public Result<String> add(HttpServletRequest request, Employee employee) {
+    public Result<String> save(HttpServletRequest request, Employee employee) {
         // 员工的用户名是唯一的 所以需要先进行判断
         LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Employee::getUsername, employee.getUsername());
@@ -115,6 +115,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
      */
     @Override
     public Result<Page<Employee>> page(int page, int pageSize, String name) {
+
         // 分页构造器
         Page<Employee> pageInfo = new Page<>(page, pageSize);
 
@@ -128,5 +129,42 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         // 执行分页查询
         employeeMapper.selectPage(pageInfo, wrapper);
         return Result.success(pageInfo);
+    }
+
+    /**
+     * @param id:
+     * @return Result<String>
+     * @author Luffy5522
+     * @description 根据员工id查询是否存在
+     * @date 2023/3/1 15:36
+     */
+    @Override
+    public Result<Employee> getById(Long id) {
+
+        Employee employee = employeeMapper.selectById(id);
+        if (employee != null){
+            log.info("查询到员工信息");
+            return  Result.success(employee);
+        }
+
+        return Result.error("没有查到员工信息");
+    }
+
+    @Override
+    public Result<String> update(HttpServletRequest request, Employee employee) {
+        log.info("update方法被调用");
+        Long id = (Long) request.getSession().getAttribute("employee");
+
+        employee.setUpdateUser(id);
+        employee.setUpdateTime(LocalDateTime.now());
+
+        try {
+            employeeMapper.updateById(employee);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return Result.success("修改成功");
     }
 }

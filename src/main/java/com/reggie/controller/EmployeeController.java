@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.reggie.config.Result;
 import com.reggie.pojo.Employee;
 import com.reggie.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -37,8 +36,8 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Result<String> add(HttpServletRequest request, @RequestBody Employee employee) {
-        return employeeService.add(request, employee);
+    public Result<String> save(HttpServletRequest request, @RequestBody Employee employee) {
+        return employeeService.save(request, employee);
     }
 
     @GetMapping("/page")
@@ -46,5 +45,18 @@ public class EmployeeController {
         return employeeService.page(page, pageSize, name);
 
     }
+
+    // 查询员工账号
+    @GetMapping("/{id}")
+    public Result<Employee> getById(@PathVariable Long id) {
+        return employeeService.getById(id);
+    }
+
+    @PutMapping
+    public Result<String> update(HttpServletRequest request, @RequestBody Employee employee){
+        return employeeService.update(request, employee);
+    }
+
+
 
 }

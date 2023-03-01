@@ -1,9 +1,9 @@
 package com.reggie.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.reggie.config.Result;
 import com.reggie.pojo.Employee;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,11 +18,21 @@ import javax.servlet.http.HttpServletRequest;
 public interface EmployeeService extends IService<Employee> {
 
     // 登录功能
-    Result<String> login(HttpServletRequest request,Employee employee);
+    Result<String> login(HttpServletRequest request, Employee employee);
+
     // 注销功能
     Result<String> logout(HttpServletRequest request);
+
     // 新增员工
-    Result<String> add(HttpServletRequest request,Employee employee);
+    Result<String> save(HttpServletRequest request, Employee employee);
+
     // 页面查询
     Result<Page<Employee>> page(int page, int pageSize, String name);
+
+    // 查询员工id
+    Result<Employee> getById(Long id);
+
+    // 修改员工信息
+    Result<String> update(HttpServletRequest request, Employee employee);
+
 }
