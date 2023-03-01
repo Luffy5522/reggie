@@ -1,6 +1,7 @@
 package com.reggie.controller;
 
 
+import com.reggie.Dto.EmployeeDto;
 import com.reggie.config.Result;
 import com.reggie.pojo.Employee;
 import com.reggie.service.EmployeeService;
@@ -35,6 +36,11 @@ public class EmployeeController {
     @PostMapping("/logout")
     public Result<String> logout(HttpServletRequest request) {
         return employeeService.logout(request);
+    }
+
+    @PostMapping
+    public Result<String> add(HttpServletRequest request,@RequestBody Employee employee){
+        return employeeService.add(request,employee);
     }
 
 }

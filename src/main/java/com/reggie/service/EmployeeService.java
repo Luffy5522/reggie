@@ -1,5 +1,6 @@
 package com.reggie.service;
 
+import com.reggie.Dto.EmployeeDto;
 import com.reggie.config.Result;
 import com.reggie.pojo.Employee;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -18,6 +19,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface EmployeeService extends IService<Employee> {
 
+    // 登录功能
     Result<String> login(HttpServletRequest request,Employee employee);
+    // 注销功能
     Result<String> logout(HttpServletRequest request);
+    // 新增员工
+    Result<String> add(HttpServletRequest request,Employee employee);
 }
